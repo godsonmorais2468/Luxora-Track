@@ -58,12 +58,12 @@ export const adminBottomNav = {
 export const staffBottomNav = {
   primary: [
     { label: "Dashboard", path: "/staff/dashboard", icon: LayoutDashboard },
-    { label: "Items", path: "/staff/items", icon: Package },
     { label: "Opening", path: "/staff/opening-stock", icon: PackageOpen },
     { label: "Closing", path: "/staff/closing-stock", icon: PackageCheck },
     { label: "Reports", path: "/staff/reports", icon: BarChart3 },
   ],
   overflow: [
+    { label: "Items", path: "/staff/items", icon: Package },
     { label: "Adjustments", path: "/staff/adjustments", icon: SlidersHorizontal },
     { label: "Profile", path: "/staff/profile", icon: User },
   ],

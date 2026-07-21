@@ -190,20 +190,28 @@ export default function AdminDashboard() {
         </div>
       </GlassCard>
 
-      {/* Section 4 — Today's movements, split by metal */}
+      {/* Section 4 — Today's movements, split by metal (only shown when data exists) */}
       <div className="row g-2 mb-2">
-        <div className="col-md-6">
-          <MovementCard label="Today's Gold Inward" direction="in" data={inwardGold} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Silver Inward" direction="in" data={inwardSilver} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Gold Outward" direction="out" data={outwardGold} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Silver Outward" direction="out" data={outwardSilver} />
-        </div>
+        {inwardGold.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Gold Inward" direction="in" data={inwardGold} />
+          </div>
+        )}
+        {inwardSilver.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Silver Inward" direction="in" data={inwardSilver} />
+          </div>
+        )}
+        {outwardGold.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Gold Outward" direction="out" data={outwardGold} />
+          </div>
+        )}
+        {outwardSilver.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Silver Outward" direction="out" data={outwardSilver} />
+          </div>
+        )}
       </div>
 
       {/* Section 5 — Show Branch-wise Details (right-aligned) */}

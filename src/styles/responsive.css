@@ -329,15 +329,18 @@
     font-size: 0.88rem;
   }
 
-  /* Any button pair/row (Save+Cancel, form actions, modal footers) stacks
-     full-width on mobile instead of squeezing side by side. */
-  .d-flex.gap-2:has(.btn-lux) {
-    flex-direction: column;
-    width: 100%;
+  /* Any button row (Save/Cancel, modal footers, Reports actions, page
+     actions like "Show Branch-wise Details") becomes compact, wraps into
+     multiple rows if needed, and hugs the LEFT edge — never huge, never
+     right/center aligned, never stretched full-width. */
+  .d-flex:has(> .btn-lux) {
+    flex-wrap: wrap;
+    justify-content: flex-start !important;
   }
 
-  .d-flex.gap-2:has(.btn-lux) .btn-lux {
-    width: 100%;
+  .d-flex:has(> .btn-lux) > .btn-lux {
+    width: auto;
+    flex: 0 1 auto;
   }
 
   .glass-input,
@@ -355,8 +358,27 @@
   .glass-card,
   .kpi-card,
   .branch-card {
-    border-radius: 20px;
-    padding: 1rem 1.1rem;
+    border-radius: 18px;
+    padding: 0.85rem 0.95rem;
+  }
+
+  /* Report filters called out as oversized — compact dropdowns specifically,
+     tighter gap/margins, while the 52px form-input rule above stays for
+     everything else (real data-entry forms). */
+  .filter-panel {
+    gap: 0.55rem !important;
+    margin-bottom: 0.6rem !important;
+  }
+
+  .filter-panel .glass-select {
+    min-height: 44px !important;
+    padding: 0.55rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .filter-panel .form-label-lux {
+    margin-bottom: 0.25rem;
+    font-size: 0.62rem;
   }
 
   .icon-btn {

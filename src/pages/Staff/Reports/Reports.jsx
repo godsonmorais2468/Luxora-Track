@@ -123,48 +123,57 @@ export default function StaffReports() {
         </div>
       </GlassCard>
 
-      {/* Today's movements — split by metal */}
+      {/* Today's movements — split by metal (only shown when data exists) */}
       <div className="row g-2 mb-3">
-        <div className="col-md-6">
-          <MovementCard label="Today's Gold Inward" direction="in" data={inGold} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Silver Inward" direction="in" data={inSilver} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Gold Outward" direction="out" data={outGold} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Silver Outward" direction="out" data={outSilver} />
-        </div>
+        {inGold.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Gold Inward" direction="in" data={inGold} />
+          </div>
+        )}
+        {inSilver.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Silver Inward" direction="in" data={inSilver} />
+          </div>
+        )}
+        {outGold.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Gold Outward" direction="out" data={outGold} />
+          </div>
+        )}
+        {outSilver.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Silver Outward" direction="out" data={outSilver} />
+          </div>
+        )}
       </div>
 
       <div className="row g-3 mb-3">
-        <div className="col-lg-7">
-          <GlassCard>
-            <SectionHeader title="Today's Inward — Gold & Silver" subtitle="Line-item movements" />
-            <div className="data-table-head" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
-              <span>Group</span>
-              <span>Category</span>
-              <span>Qty</span>
-              <span>Weight</span>
-              <span>Time</span>
-            </div>
-            {inwardEntries.map((e) => (
-              <div key={e.id} className="inventory-row" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
-                <div className="inventory-row__value" data-label="Group">
-                  <span className={`badge-lux ${e.group === "Gold" ? "badge-lux--gold" : "badge-lux--neutral"}`}>{e.group}</span>
-                </div>
-                <div className="inventory-row__value" data-label="Category">{e.category}</div>
-                <div className="inventory-row__value" data-label="Qty">{e.quantity}</div>
-                <div className="inventory-row__value" data-label="Weight">{formatWeight(e.weight)}</div>
-                <div className="inventory-row__value" data-label="Time" style={{ color: "var(--muted)" }}>{e.time}</div>
+        {inwardEntries.length > 0 && (
+          <div className="col-lg-7">
+            <GlassCard>
+              <SectionHeader title="Today's Inward — Gold & Silver" subtitle="Line-item movements" />
+              <div className="data-table-head" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
+                <span>Group</span>
+                <span>Category</span>
+                <span>Qty</span>
+                <span>Weight</span>
+                <span>Time</span>
               </div>
-            ))}
-            {inwardEntries.length === 0 && <div className="empty-state">No inward movements today.</div>}
-          </GlassCard>
-        </div>
-        <div className="col-lg-5">
+              {inwardEntries.map((e) => (
+                <div key={e.id} className="inventory-row" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
+                  <div className="inventory-row__value" data-label="Group">
+                    <span className={`badge-lux ${e.group === "Gold" ? "badge-lux--gold" : "badge-lux--neutral"}`}>{e.group}</span>
+                  </div>
+                  <div className="inventory-row__value" data-label="Category">{e.category}</div>
+                  <div className="inventory-row__value" data-label="Qty">{e.quantity}</div>
+                  <div className="inventory-row__value" data-label="Weight">{formatWeight(e.weight)}</div>
+                  <div className="inventory-row__value" data-label="Time" style={{ color: "var(--muted)" }}>{e.time}</div>
+                </div>
+              ))}
+            </GlassCard>
+          </div>
+        )}
+        <div className={inwardEntries.length > 0 ? "col-lg-5" : "col-lg-12"}>
           <GlassCard>
             <SectionHeader title="Movement Mix" subtitle="Gold & Silver, Inward vs Outward — by value" />
             <ChartWrapper
@@ -177,28 +186,29 @@ export default function StaffReports() {
         </div>
       </div>
 
-      <GlassCard>
-        <SectionHeader title="Today's Outward — Gold & Silver" subtitle="Line-item movements" />
-        <div className="data-table-head" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
-          <span>Group</span>
-          <span>Category</span>
-          <span>Qty</span>
-          <span>Weight</span>
-          <span>Time</span>
-        </div>
-        {outwardEntries.map((e) => (
-          <div key={e.id} className="inventory-row" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
-            <div className="inventory-row__value" data-label="Group">
-              <span className={`badge-lux ${e.group === "Gold" ? "badge-lux--gold" : "badge-lux--neutral"}`}>{e.group}</span>
-            </div>
-            <div className="inventory-row__value" data-label="Category">{e.category}</div>
-            <div className="inventory-row__value" data-label="Qty">{e.quantity}</div>
-            <div className="inventory-row__value" data-label="Weight">{formatWeight(e.weight)}</div>
-            <div className="inventory-row__value" data-label="Time" style={{ color: "var(--muted)" }}>{e.time}</div>
+      {outwardEntries.length > 0 && (
+        <GlassCard>
+          <SectionHeader title="Today's Outward — Gold & Silver" subtitle="Line-item movements" />
+          <div className="data-table-head" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
+            <span>Group</span>
+            <span>Category</span>
+            <span>Qty</span>
+            <span>Weight</span>
+            <span>Time</span>
           </div>
-        ))}
-        {outwardEntries.length === 0 && <div className="empty-state">No outward movements today.</div>}
-      </GlassCard>
+          {outwardEntries.map((e) => (
+            <div key={e.id} className="inventory-row" style={{ gridTemplateColumns: "1fr 1fr 1fr 1fr 0.8fr" }}>
+              <div className="inventory-row__value" data-label="Group">
+                <span className={`badge-lux ${e.group === "Gold" ? "badge-lux--gold" : "badge-lux--neutral"}`}>{e.group}</span>
+              </div>
+              <div className="inventory-row__value" data-label="Category">{e.category}</div>
+              <div className="inventory-row__value" data-label="Qty">{e.quantity}</div>
+              <div className="inventory-row__value" data-label="Weight">{formatWeight(e.weight)}</div>
+              <div className="inventory-row__value" data-label="Time" style={{ color: "var(--muted)" }}>{e.time}</div>
+            </div>
+          ))}
+        </GlassCard>
+      )}
     </div>
   );
 }
