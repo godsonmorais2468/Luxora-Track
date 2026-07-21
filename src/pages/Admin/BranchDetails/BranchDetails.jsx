@@ -3,7 +3,7 @@ import { ArrowLeft, Phone, Coins } from "lucide-react";
 import GlassCard from "../../../components/common/GlassCard";
 import SectionHeader from "../../../components/common/SectionHeader";
 import ChartWrapper, { goldLineOptions, donutOptions } from "../../../components/charts/ChartOptions";
-import { formatWeight } from "../../../data/mockData";
+import { formatWeight, formatCurrency, goldRate, silverRate } from "../../../data/mockData";
 import { useData } from "../../../context/DataContext";
 
 const timelineOptions = {
@@ -31,6 +31,14 @@ export default function BranchDetails() {
   const trendSeries = [1, 1.02, 0.99, 1.03, 1.05, 1.02, 1.06].map((mult) =>
     Math.round(((gold.weight + silver.weight) / 10) * mult * 10) / 10
   );
+
+  // Same valuation formula as the Dashboard's Group-wise Stock Summary —
+  // gold priced per 10g, silver priced per gram — so figures match exactly.
+  const goldValue = Math.round(gold.weight * (goldRate / 10));
+  const silverValue = Math.round(silver.weight * silverRate);
+  const totalWeight = gold.weight + silver.weight;
+  const totalQuantity = gold.quantity + silver.quantity;
+  const totalValue = goldValue + silverValue;
 
   return (
     <div className="lux-container">
@@ -89,6 +97,7 @@ export default function BranchDetails() {
 
         {[gold, silver].map((group, gi) => {
           const name = gi === 0 ? "Gold" : "Silver";
+          const value = gi === 0 ? goldValue : silverValue;
           return (
             <div key={name} style={{ marginBottom: gi === 0 ? "1rem" : 0 }}>
               {/* Group header with totals */}
@@ -105,12 +114,18 @@ export default function BranchDetails() {
                 </div>
                 <div className="metal-row__stats">
                   <div className="metal-row__stat">
-                    <span className="metal-row__stat-label">Quantity</span>
+                    <span className="metal-row__stat-label">Weight</span>
+                    <span className="metal-row__stat-value">{formatWeight(group.weight)}</span>
+                  </div>
+                  <div className="metal-row__stat">
+                    <span className="metal-row__stat-label">Quantity (Nos)</span>
                     <span className="metal-row__stat-value">{group.quantity}</span>
                   </div>
                   <div className="metal-row__stat">
-                    <span className="metal-row__stat-label">Weight</span>
-                    <span className="metal-row__stat-value">{formatWeight(group.weight)}</span>
+                    <span className="metal-row__stat-label">Stock Value</span>
+                    <span className="metal-row__stat-value" style={{ color: name === "Gold" ? "var(--gold)" : "var(--white)" }}>
+                      {formatCurrency(value)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -134,6 +149,36 @@ export default function BranchDetails() {
             </div>
           );
         })}
+
+        {/* Total — combined Gold + Silver, same layout as the Dashboard's
+            Group-wise Stock Summary total row */}
+        <div
+          className="metal-row"
+          style={{
+            borderColor: "rgba(212,175,55,0.4)",
+            background: "linear-gradient(120deg, rgba(212,175,55,0.12), rgba(212,175,55,0.03))",
+          }}
+        >
+          <div className="metal-row__name" style={{ color: "var(--gold)", fontWeight: 700 }}>
+            Total
+          </div>
+          <div className="metal-row__stats">
+            <div className="metal-row__stat">
+              <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Weight</span>
+              <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>{formatWeight(totalWeight)}</span>
+            </div>
+            <div className="metal-row__stat">
+              <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Quantity (Nos)</span>
+              <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>{totalQuantity}</span>
+            </div>
+            <div className="metal-row__stat">
+              <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Stock Value</span>
+              <span className="metal-row__stat-value" style={{ color: "var(--gold)", fontSize: "0.95rem" }}>
+                {formatCurrency(totalValue)}
+              </span>
+            </div>
+          </div>
+        </div>
       </GlassCard>
 
       {/* Charts — below the stock breakdown */}

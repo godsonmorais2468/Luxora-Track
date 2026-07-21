@@ -1,4 +1,4 @@
-import { LayoutDashboard, Building2, PlusCircle, Users, UserPlus, Layers, Tags, BarChart3, PackageOpen, PackageCheck, SlidersHorizontal, User, Package } from "lucide-react";
+import { LayoutDashboard, Building2, PlusCircle, Users, UserPlus, Layers, Tags, BarChart3, PackageOpen, PackageCheck, SlidersHorizontal, User } from "lucide-react";
 
 export const adminNav= [
   {
@@ -63,7 +63,6 @@ export const staffBottomNav = {
     { label: "Reports", path: "/staff/reports", icon: BarChart3 },
   ],
   overflow: [
-    { label: "Items", path: "/staff/items", icon: Package },
     { label: "Adjustments", path: "/staff/adjustments", icon: SlidersHorizontal },
     { label: "Profile", path: "/staff/profile", icon: User },
   ],
@@ -79,7 +78,6 @@ export const staffNav= [
   {
     label: "Inventory",
     items: [
-      { label: "Items", path: "/staff/items", icon: Package },
       { label: "Opening Stock", path: "/staff/opening-stock", icon: PackageOpen },
       { label: "Closing Stock", path: "/staff/closing-stock", icon: PackageCheck },
       { label: "Adjustments", path: "/staff/adjustments", icon: SlidersHorizontal },

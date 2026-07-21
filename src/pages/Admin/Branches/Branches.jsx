@@ -4,7 +4,7 @@ import { Pencil, Trash2, Save, X, Check, Coins, ChevronRight } from "lucide-reac
 import PageHero from "../../../components/hero/PageHero";
 import Button from "../../../components/buttons/Button";
 import Modal from "../../../components/common/Modal";
-import { formatWeight } from "../../../data/mockData";
+import { formatWeight, formatCurrency, goldRate, silverRate } from "../../../data/mockData";
 import { useData } from "../../../context/DataContext";
 import { useToast } from "../../../context/ToastContext";
 
@@ -44,7 +44,14 @@ export default function Branches() {
       <PageHero eyebrow="Network" title="Branches" subtitle="Stock by branch and metal group" />
 
       <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-        {branches.map((b, i) => (
+        {branches.map((b, i) => {
+          const branchTotalWeight = b.groups.reduce((sum, g) => sum + g.weight, 0);
+          const branchTotalQuantity = b.groups.reduce((sum, g) => sum + g.quantity, 0);
+          const branchTotalValue = b.groups.reduce(
+            (sum, g) => sum + Math.round(g.weight * (g.group === "Gold" ? goldRate / 10 : silverRate)),
+            0
+          );
+          return (
           <div
             key={b.id}
             className="glass-card"
@@ -86,26 +93,65 @@ export default function Branches() {
 
             {/* Both metal groups inside the SAME branch card */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-              {b.groups.map((g) => (
-                <div key={g.group} className="metal-row">
-                  <div className="metal-row__name">
-                    <Coins size={13} color={g.group === "Gold" ? "var(--gold)" : "var(--secondary)"} /> {g.group}
+              {b.groups.map((g) => {
+                const value = Math.round(g.weight * (g.group === "Gold" ? goldRate / 10 : silverRate));
+                return (
+                  <div key={g.group} className="metal-row">
+                    <div className="metal-row__name">
+                      <Coins size={13} color={g.group === "Gold" ? "var(--gold)" : "var(--secondary)"} /> {g.group}
+                    </div>
+                    <div className="metal-row__stats">
+                      <div className="metal-row__stat">
+                        <span className="metal-row__stat-label">Weight</span>
+                        <span className="metal-row__stat-value">{formatWeight(g.weight)}</span>
+                      </div>
+                      <div className="metal-row__stat">
+                        <span className="metal-row__stat-label">Quantity (Nos)</span>
+                        <span className="metal-row__stat-value">{g.quantity}</span>
+                      </div>
+                      <div className="metal-row__stat">
+                        <span className="metal-row__stat-label">Stock Value</span>
+                        <span className="metal-row__stat-value" style={{ color: g.group === "Gold" ? "var(--gold)" : "var(--white)" }}>
+                          {formatCurrency(value)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="metal-row__stats">
-                    <div className="metal-row__stat">
-                      <span className="metal-row__stat-label">Quantity</span>
-                      <span className="metal-row__stat-value">{g.quantity}</span>
-                    </div>
-                    <div className="metal-row__stat">
-                      <span className="metal-row__stat-label">Weight</span>
-                      <span className="metal-row__stat-value">{formatWeight(g.weight)}</span>
-                    </div>
+                );
+              })}
+
+              {/* Total — combined Gold + Silver for this branch */}
+              <div
+                className="metal-row"
+                style={{
+                  borderColor: "rgba(212,175,55,0.4)",
+                  background: "linear-gradient(120deg, rgba(212,175,55,0.12), rgba(212,175,55,0.03))",
+                }}
+              >
+                <div className="metal-row__name" style={{ color: "var(--gold)", fontWeight: 700 }}>
+                  Total
+                </div>
+                <div className="metal-row__stats">
+                  <div className="metal-row__stat">
+                    <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Weight</span>
+                    <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>{formatWeight(branchTotalWeight)}</span>
+                  </div>
+                  <div className="metal-row__stat">
+                    <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Quantity (Nos)</span>
+                    <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>{branchTotalQuantity}</span>
+                  </div>
+                  <div className="metal-row__stat">
+                    <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Stock Value</span>
+                    <span className="metal-row__stat-value" style={{ color: "var(--gold)", fontSize: "0.95rem" }}>
+                      {formatCurrency(branchTotalValue)}
+                    </span>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
-        ))}
+          );
+        })}
         {branches.length === 0 && <div className="empty-state">No branches yet.</div>}
       </div>
 
