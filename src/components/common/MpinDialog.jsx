@@ -99,20 +99,18 @@ export default function MpinDialog({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          className="modal-overlay"
           style={{
             position: "fixed",
             inset: 0,
             zIndex: 2000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
             background: "rgba(0,0,0,0.6)",
             backdropFilter: "blur(8px)",
           }}
           onClick={onClose}
         >
           <motion.div
-            className = "glass-panel"
+            className = "glass-panel modal-sheet"
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}

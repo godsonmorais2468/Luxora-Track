@@ -1,12 +1,9 @@
-import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Gem } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
-export default function Sidebar({
-  sections, collapsed, onToggle, mobileOpen, onMobileClose,
-}) {
+export default function Sidebar({ sections, collapsed }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -15,53 +12,18 @@ export default function Sidebar({
     navigate("/login");
   };
 
-  // Lock body scroll while the mobile drawer is open
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
-
-  // Auto-close the mobile drawer whenever a nav link is tapped
-  const handleLinkClick = () => {
-    if (mobileOpen && onMobileClose) onMobileClose();
-  };
-
   return (
     <>
-      {/* Scoped responsive rules — mobile drawer, tablet auto-sizing, desktop collapse */}
+      {/* Scoped responsive rules — hidden on mobile (replaced by BottomNav), tablet auto-sizing */}
       <style>{`
         .sidebar {
-          transition: width 0.3s ease, transform 0.3s ease;
+          transition: width 0.3s ease;
         }
 
-        /* Mobile phones */
+        /* Mobile phones — bottom nav takes over navigation entirely */
         @media (max-width: 768px) {
           .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 260px !important;
-            max-width: 82vw;
-            transform: translateX(-100%);
-            z-index: 1000;
-            box-shadow: 8px 0 32px rgba(0,0,0,0.4);
-          }
-          .sidebar.open {
-            transform: translateX(0);
-          }
-          .sidebar-link {
-            min-height: 44px;
-            font-size: 0.95rem;
-          }
-          .sidebar-brand {
-            padding: 1.1rem 1rem;
+            display: none;
           }
         }
 
@@ -89,20 +51,8 @@ export default function Sidebar({
         }
       `}</style>
 
-      {mobileOpen && (
-        <div
-          onClick={onMobileClose}
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.5)",
-            zIndex: 999,
-            backdropFilter: "blur(4px)",
-          }}
-        />
-      )}
       <aside
-        className={`sidebar ${mobileOpen ? "open" : ""}`}
+        className="sidebar"
         style={{ width: collapsed ? "var(--sidebar-collapsed)" : "var(--sidebar-width)" }}
       >
         <div className="sidebar-brand">
@@ -144,7 +94,6 @@ export default function Sidebar({
                   key={item.path}
                   to={item.path}
                   end
-                  onClick={handleLinkClick}
                   className={({ isActive }) =>
                     `sidebar-link ${isActive ? "active" : ""}`
                   }

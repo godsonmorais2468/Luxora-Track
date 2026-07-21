@@ -2,9 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
 import Navbar from "../navbar/Navbar";
+import BottomNav from "../bottomnav/BottomNav";
+import { useAuth } from "../../context/AuthContext";
+import { adminBottomNav, staffBottomNav } from "../../config/navigation";
 
 export default function AppLayout({ sections, children }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { user } = useAuth();
   const [viewport, setViewport] = useState("desktop"); // "mobile" | "tablet" | "desktop"
   const location = useLocation();
   const pageBodyRef = useRef(null);
@@ -43,24 +46,23 @@ export default function AppLayout({ sections, children }) {
       ? "var(--sidebar-collapsed)"
       : "var(--sidebar-width)";
 
+  const bottomNav = user?.role === "Admin" ? adminBottomNav : staffBottomNav;
+
   return (
     <>
-      <Sidebar
-        sections={sections}
-        mobileOpen={mobileOpen}
-        onMobileClose={() => setMobileOpen(false)}
-      />
+      <Sidebar sections={sections} />
       <div
         className="main-content"
         style={{ marginLeft: contentMarginLeft, transition: "margin-left 0.3s ease" }}
       >
-        <Navbar onMobileMenu={() => setMobileOpen(true)} />
+        <Navbar />
         <div className="page-body" ref={pageBodyRef}>
           <div key={location.pathname} className="fade-in-up">
             {children}
           </div>
         </div>
       </div>
+      <BottomNav primary={bottomNav.primary} overflow={bottomNav.overflow} />
     </>
   );
 }

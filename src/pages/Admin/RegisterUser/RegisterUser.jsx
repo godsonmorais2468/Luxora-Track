@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Save, X } from "lucide-react";
+import { Save, X, CheckCircle2 } from "lucide-react";
 import PageHero from "../../../components/hero/PageHero";
 import GlassCard from "../../../components/common/GlassCard";
 import Button from "../../../components/buttons/Button";
@@ -14,6 +14,7 @@ export default function RegisterUser() {
   const toast = useToast();
   const [form, setForm] = useState(emptyForm);
   const [showMpin, setShowMpin] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(false);
 
   const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
@@ -26,6 +27,7 @@ export default function RegisterUser() {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    setSuccessMsg(false);
     if (!form.name.trim() || !form.email.trim() || !form.password) return;
     if (form.role === "Staff" && !form.branchId) {
       toast("Please assign a branch for staff users", "error");
@@ -46,6 +48,7 @@ export default function RegisterUser() {
         id: `u${Date.now()}`,
         name: form.name,
         email: form.email,
+        phone: form.phone,
         role: form.role,
         branch: branch ? branch.name : "All Branches",
         status: "Active",
@@ -54,6 +57,7 @@ export default function RegisterUser() {
     ]);
     setShowMpin(false);
     setForm(emptyForm);
+    setSuccessMsg(true);
     toast("User Registered Successfully");
   };
 
@@ -64,6 +68,24 @@ export default function RegisterUser() {
         title="Register User"
         subtitle="Create a new staff or admin account"
       />
+
+      {successMsg && (
+        <GlassCard
+          className="mb-3"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            border: "1px solid var(--success)",
+            background: "rgba(46, 204, 113, 0.08)",
+          }}
+        >
+          <CheckCircle2 size={18} color="var(--success)" />
+          <span style={{ color: "var(--success)", fontWeight: 600, fontSize: "0.88rem" }}>
+            User registered successfully.
+          </span>
+        </GlassCard>
+      )}
 
       <GlassCard>
         <form onSubmit={handleRegister}>

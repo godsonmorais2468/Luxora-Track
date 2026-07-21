@@ -11,13 +11,11 @@ export default function Modal({ open, title, subtitle, onClose, children, width 
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
+          className="modal-overlay"
           style={{
             position: "fixed",
             inset: 0,
             zIndex: 2000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
             background: "rgba(0, 0, 0, 0.6)",
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
@@ -26,7 +24,7 @@ export default function Modal({ open, title, subtitle, onClose, children, width 
           onClick={onClose}
         >
           <motion.div
-            className="glass-panel"
+            className="glass-panel modal-sheet"
             initial={{ scale: 0.94, opacity: 0, y: 16 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.94, opacity: 0, y: 16 }}

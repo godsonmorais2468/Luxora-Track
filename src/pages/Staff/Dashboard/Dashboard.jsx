@@ -42,6 +42,7 @@ export default function StaffDashboard() {
 
   const netStockValue = gold.value + silver.value;
   const totalNetWeight = gold.weight + silver.weight;
+  const totalNetQuantity = gold.quantity + silver.quantity;
 
   return (
     <div className="lux-container">
@@ -82,26 +83,7 @@ export default function StaffDashboard() {
         </div>
       </div>
 
-      {/* Section 2 — Net Stock Value (compact) */}
-      <GlassCard className="mb-2">
-        <SectionHeader title="Net Stock Value" subtitle="Your branch valuation" />
-        <div className="stat-strip">
-          <div className="stat-chip">
-            <span className="stat-chip__label">Gold</span>
-            <span className="stat-chip__value text-gold">{formatCurrency(gold.value)}</span>
-          </div>
-          <div className="stat-chip">
-            <span className="stat-chip__label">Silver</span>
-            <span className="stat-chip__value">{formatCurrency(silver.value)}</span>
-          </div>
-          <div className="stat-chip" style={{ borderColor: "rgba(212,175,55,0.35)", background: "rgba(212,175,55,0.05)" }}>
-            <span className="stat-chip__label">Total</span>
-            <span className="stat-chip__value text-gold">{formatCurrency(netStockValue)}</span>
-          </div>
-        </div>
-      </GlassCard>
-
-      {/* Section 3 — Gold / Silver summary + Total Net Weight */}
+      {/* Section 3 — Gold / Silver summary + Totals */}
       <GlassCard className="mb-2">
         <SectionHeader title="Metal-wise Stock Summary" />
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
@@ -145,12 +127,33 @@ export default function StaffDashboard() {
             </div>
           </div>
 
-          <div className="metal-row" style={{ background: "rgba(212,175,55,0.06)", borderColor: "rgba(212,175,55,0.3)" }}>
-            <div className="metal-row__name">Total Net Weight</div>
+          <div
+            className="metal-row"
+            style={{
+              borderColor: "rgba(212,175,55,0.4)",
+              background: "linear-gradient(120deg, rgba(212,175,55,0.12), rgba(212,175,55,0.03))",
+            }}
+          >
+            <div className="metal-row__name" style={{ color: "var(--gold)", fontWeight: 700 }}>
+              Total
+            </div>
             <div className="metal-row__stats">
               <div className="metal-row__stat">
-                <span className="metal-row__stat-value" style={{ fontSize: "0.95rem", color: "var(--gold)" }}>
+                <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Weight</span>
+                <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>
                   {formatWeight(totalNetWeight)}
+                </span>
+              </div>
+              <div className="metal-row__stat">
+                <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Quantity (Nos)</span>
+                <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>
+                  {totalNetQuantity}
+                </span>
+              </div>
+              <div className="metal-row__stat">
+                <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Stock Value</span>
+                <span className="metal-row__stat-value" style={{ color: "var(--gold)", fontSize: "0.95rem" }}>
+                  {formatCurrency(netStockValue)}
                 </span>
               </div>
             </div>
@@ -158,20 +161,28 @@ export default function StaffDashboard() {
         </div>
       </GlassCard>
 
-      {/* Section 4 — Today's movements, split by metal */}
+      {/* Section 4 — Today's movements, split by metal (only shown when data exists) */}
       <div className="row g-2 mb-2">
-        <div className="col-md-6">
-          <MovementCard label="Today's Gold Inward" direction="in" data={movements.inGold} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Silver Inward" direction="in" data={movements.inSilver} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Gold Outward" direction="out" data={movements.outGold} />
-        </div>
-        <div className="col-md-6">
-          <MovementCard label="Today's Silver Outward" direction="out" data={movements.outSilver} />
-        </div>
+        {movements.inGold?.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Gold Inward" direction="in" data={movements.inGold} />
+          </div>
+        )}
+        {movements.inSilver?.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Silver Inward" direction="in" data={movements.inSilver} />
+          </div>
+        )}
+        {movements.outGold?.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Gold Outward" direction="out" data={movements.outGold} />
+          </div>
+        )}
+        {movements.outSilver?.quantity > 0 && (
+          <div className="col-md-6">
+            <MovementCard label="Today's Silver Outward" direction="out" data={movements.outSilver} />
+          </div>
+        )}
       </div>
 
       {/* Compact charts */}

@@ -177,7 +177,7 @@ export default function Login() {
 
       <style>{`
         @media (max-width: 900px) {
-          .login-left-panel { display: none; }
+          .login-left-panel { display: none !important; }
         }
       `}</style>
 
@@ -298,11 +298,12 @@ export default function Login() {
                   {busy ? "Checking..." : "Continue"}
                 </Button>
 
-                <p style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "0.72rem", color: "var(--muted-dark)" }}>
+                <p className="login-mobile-hide" style={{ textAlign: "center", marginTop: "1.5rem", fontSize: "0.72rem", color: "var(--muted-dark)" }}>
                   Authorized personnel only. All actions are audited.
                 </p>
 
                 <div
+                  className="login-mobile-hide"
                   style={{
                     marginTop: "1.5rem",
                     padding: "0.9rem 1rem",

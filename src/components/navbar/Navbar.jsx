@@ -1,9 +1,9 @@
-import { Menu, Bell } from "lucide-react";
+import { Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
 import SearchBar from "../inputs/SearchBar";
 
-export default function Navbar({ onMobileMenu }) {
+export default function Navbar() {
   const { user } = useAuth();
   const initials = user?.full_name
     ?.split(" ")
@@ -14,18 +14,10 @@ export default function Navbar({ onMobileMenu }) {
 
   return (
     <nav className = "navbar-lux">
-      <div className = "d-flex align-items-center gap-3">
-        <button
-          className = "icon-btn d-md-none"
-          onClick={onMobileMenu}
-          aria-label = "Open menu"
-          style={{ border: "none" }}
-        >
-          <Menu size={20} />
-        </button>
+      <div className = "d-flex align-items-center gap-3 navbar-row navbar-row--search">
         <SearchBar />
       </div>
-      <div className = "d-flex align-items-center gap-3">
+      <div className = "d-flex align-items-center gap-3 navbar-row navbar-row--actions">
         <motion.button
           className = "icon-btn"
           whileHover={{ scale: 1.1 }}

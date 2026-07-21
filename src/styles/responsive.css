@@ -93,6 +93,35 @@
     grid-template-columns: 1fr !important;
   }
 
+  /* Navbar becomes two rows: actions on top, full-width search below */
+  .navbar-lux {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--navbar-height);
+    padding: 0.65rem 1rem;
+    row-gap: 0.6rem;
+  }
+
+  .navbar-row--actions {
+    width: 100%;
+    order: 1;
+    justify-content: space-between;
+  }
+
+  .navbar-row--search {
+    width: 100%;
+    order: 2;
+  }
+
+  .navbar-search {
+    width: 100%;
+    min-width: 0 !important;
+  }
+
+  .navbar-search:focus-within {
+    min-width: 0 !important;
+  }
+
   .login-card {
     width: 92vw !important;
     padding: 2rem 1.5rem !important;
@@ -104,14 +133,21 @@
     grid-template-columns: 1fr !important;
   }
 
-  .navbar-search {
-    display: none;
-  }
-
   .page-hero {
     flex-direction: column;
     align-items: flex-start !important;
     gap: 0.6rem;
+  }
+}
+
+/* Login — mobile-only decluttering (desktop untouched) */
+@media (max-width: 640px) {
+  .login-mobile-hide {
+    display: none !important;
+  }
+
+  .login-card {
+    padding: 2rem 1.25rem !important;
   }
 }
 
@@ -223,5 +259,79 @@
     height: 54px;
     font-size: 1.15rem;
     border-radius: 14px;
+  }
+}
+
+/* ---------- Native-app touch targets (buttons/inputs/cards) ---------- */
+@media (max-width: 768px) {
+  .btn-lux {
+    min-height: 54px;
+    padding: 0.85rem 1.4rem;
+    font-size: 0.92rem;
+    border-radius: 16px;
+  }
+
+  .btn-lux.btn-sm {
+    min-height: 50px;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.88rem;
+  }
+
+  /* Any button pair/row (Save+Cancel, form actions, modal footers) stacks
+     full-width on mobile instead of squeezing side by side. */
+  .d-flex.gap-2:has(.btn-lux) {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .d-flex.gap-2:has(.btn-lux) .btn-lux {
+    width: 100%;
+  }
+
+  .glass-input,
+  .glass-select {
+    min-height: 52px;
+    padding: 0.8rem 1rem;
+    font-size: 16px; /* prevents iOS auto-zoom on focus */
+    border-radius: 14px;
+  }
+
+  .glass-select {
+    padding-right: 2.75rem;
+  }
+
+  .glass-card,
+  .kpi-card,
+  .branch-card {
+    border-radius: 20px;
+    padding: 1rem 1.1rem;
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+
+  .page-body {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Desktop dialogs become full-width bottom sheets for easy thumb reach */
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .modal-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 86vh !important;
+    border-radius: 22px 22px 0 0 !important;
+    padding: 1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom)) !important;
   }
 }

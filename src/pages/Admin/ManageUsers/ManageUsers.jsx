@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pencil, Trash2, Shield, Mail, Save, X, Check } from "lucide-react";
+import { Pencil, Trash2, Shield, Mail, Phone, Save, X, Check } from "lucide-react";
 import PageHero from "../../../components/hero/PageHero";
 import GlassCard from "../../../components/common/GlassCard";
 import Button from "../../../components/buttons/Button";
@@ -7,10 +7,10 @@ import Modal from "../../../components/common/Modal";
 import { useData } from "../../../context/DataContext";
 import { useToast } from "../../../context/ToastContext";
 
-const emptyForm = { name: "", email: "", role: "Staff" };
+const emptyForm = { name: "", email: "", phone: "", role: "Staff", branchId: "" };
 
 export default function ManageUsers() {
-  const { users, setUsers } = useData();
+  const { users, setUsers, branches } = useData();
   const toast = useToast();
   const [query, setQuery] = useState("");
   const [editingId, setEditingId] = useState(null);
@@ -26,7 +26,21 @@ export default function ManageUsers() {
 
   const startEdit = (u) => {
     setEditingId(u.id);
-    setForm({ name: u.name, email: u.email, role: u.role });
+    const matchedBranch = branches.find((b) => b.name === u.branch);
+    setForm({
+      name: u.name,
+      email: u.email,
+      phone: u.phone || "",
+      role: u.role,
+      branchId: matchedBranch ? matchedBranch.id : "",
+    });
+  };
+
+  // Role drives the branch dropdown, same behavior as Register User:
+  // "All Branches (Admin)" is only a valid choice for Admins.
+  const handleRoleChange = (e) => {
+    const role = e.target.value;
+    setForm((f) => ({ ...f, role, branchId: role === "Staff" && f.branchId === "" ? "" : f.branchId }));
   };
 
   const saveEdit = () => {
@@ -34,10 +48,35 @@ export default function ManageUsers() {
       toast("Name and email are required", "error");
       return;
     }
-    setUsers((prev) => prev.map((u) => (u.id === editingId ? { ...u, ...form } : u)));
+    if (form.role === "Staff" && !form.branchId) {
+      toast("Please assign a branch for staff users", "error");
+      return;
+    }
+    const branch = branches.find((b) => b.id === form.branchId);
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === editingId
+          ? {
+              ...u,
+              name: form.name,
+              email: form.email,
+              phone: form.phone,
+              role: form.role,
+              branch: branch ? branch.name : "All Branches",
+            }
+          : u
+      )
+    );
     setEditingId(null);
     toast("User Updated Successfully");
   };
+
+  // Newest user shows first — sorted by id timestamp, no data mutation needed.
+  const sortedFiltered = [...filtered].sort((a, b) => {
+    const tb = parseInt(String(b.id).replace(/\D/g, ""), 10) || 0;
+    const ta = parseInt(String(a.id).replace(/\D/g, ""), 10) || 0;
+    return tb - ta;
+  });
 
   const deleteUser = (id) => {
     setUsers((prev) => prev.filter((u) => u.id !== id));
@@ -108,22 +147,21 @@ export default function ManageUsers() {
       </GlassCard>
 
       <GlassCard>
-        <div className="data-table-head" style={{ gridTemplateColumns: "2fr 2fr 1fr 2fr 1fr 1.5fr 1fr" }}>
-          <span>Name</span>
-          <span>Email</span>
+        <div className="data-table-head" style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 1fr" }}>
+          <span>Name / Branch</span>
+          <span>Phone Number / Email</span>
           <span>Role</span>
-          <span>Branch</span>
           <span>Status</span>
-          <span>Last Login</span>
           <span>Actions</span>
         </div>
-        {filtered.map((u) => (
+        {sortedFiltered.map((u) => (
           <div
             key={u.id}
             className="inventory-row"
-            style={{ gridTemplateColumns: "2fr 2fr 1fr 2fr 1fr 1.5fr 1fr" }}
+            style={{ gridTemplateColumns: "2fr 2fr 1fr 1fr 1fr" }}
           >
-            <div className="inventory-row__group">
+            {/* Name / Branch — stacked, Branch directly below Name */}
+            <div className="inventory-row__group" style={{ flexDirection: "row", alignItems: "flex-start" }}>
               <div
                 style={{
                   width: 32,
@@ -141,21 +179,31 @@ export default function ManageUsers() {
               >
                 {u.name.split(" ").map((w) => w[0]).join("").slice(0, 2)}
               </div>
-              <div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 <div className="inventory-row__name">{u.name}</div>
+                <div style={{ fontSize: "0.76rem", color: "var(--muted)" }}>{u.branch}</div>
               </div>
             </div>
-            <div className="inventory-row__value" data-label="Email" style={{ fontSize: "0.78rem" }}>
-              <Mail size={11} style={{ display: "inline", marginRight: 4 }} />
-              {u.email}
+
+            {/* Phone Number / Email — stacked, Email directly below Phone Number */}
+            <div className="inventory-row__value" data-label="Phone / Email" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 2, fontSize: "0.78rem" }}>
+              <span>
+                <Phone size={11} style={{ display: "inline", marginRight: 4 }} />
+                {u.phone || "—"}
+              </span>
+              <span style={{ color: "var(--muted)" }}>
+                <Mail size={11} style={{ display: "inline", marginRight: 4 }} />
+                {u.email}
+              </span>
             </div>
+
             <div className="inventory-row__value" data-label="Role">
               <span className={`badge-lux ${u.role === "Admin" ? "badge-lux--gold" : "badge-lux--neutral"}`}>
                 {u.role === "Admin" && <Shield size={11} />}
                 {u.role}
               </span>
             </div>
-            <div className="inventory-row__value" data-label="Branch" style={{ fontSize: "0.78rem" }}>{u.branch}</div>
+
             <div className="inventory-row__value" data-label="Status">
               <button
                 className={`badge-lux ${u.status === "Active" ? "badge-lux--success" : "badge-lux--danger"}`}
@@ -166,7 +214,7 @@ export default function ManageUsers() {
                 {u.status}
               </button>
             </div>
-            <div className="inventory-row__value" data-label="Last Login" style={{ fontSize: "0.72rem", color: "var(--muted)" }}>{u.lastLogin}</div>
+
             <div className="row-action">
               {confirmDeleteId === u.id ? (
                 <>
@@ -190,7 +238,7 @@ export default function ManageUsers() {
             </div>
           </div>
         ))}
-        {filtered.length === 0 && <div className="empty-state">No users found.</div>}
+        {sortedFiltered.length === 0 && <div className="empty-state">No users found.</div>}
       </GlassCard>
 
       {/* Edit user — centered modal popup */}
@@ -205,11 +253,32 @@ export default function ManageUsers() {
             <input className="glass-input" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           </div>
         </div>
+        <div className="form-grid-2 mb-3">
+          <div>
+            <label className="form-label-lux">Phone Number</label>
+            <input className="glass-input" placeholder="+xx xxx xxx xxxx" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+          </div>
+          <div>
+            <label className="form-label-lux">Role</label>
+            <select className="glass-input glass-select" value={form.role} onChange={handleRoleChange}>
+              <option value="Staff">Staff</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+        </div>
         <div className="mb-3">
-          <label className="form-label-lux">Role</label>
-          <select className="glass-input glass-select" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>
-            <option value="Staff">Staff</option>
-            <option value="Admin">Admin</option>
+          <label className="form-label-lux">Assigned Branch</label>
+          <select className="glass-input glass-select" value={form.branchId} onChange={(e) => setForm({ ...form, branchId: e.target.value })}>
+            {form.role === "Admin" ? (
+              <option value="">All Branches (Admin)</option>
+            ) : (
+              <option value="" disabled>
+                Select branch…
+              </option>
+            )}
+            {branches.map((b) => (
+              <option key={b.id} value={b.id}>{b.name}</option>
+            ))}
           </select>
         </div>
         <div className="d-flex gap-2 justify-content-end">

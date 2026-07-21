@@ -52,6 +52,7 @@ export default function AdminDashboard() {
 
   const netStockValue = gold.value + silver.value;
   const totalNetWeight = gold.weight + silver.weight;
+  const totalNetQuantity = gold.quantity + silver.quantity;
 
   return (
     <div className="lux-container">
@@ -155,12 +156,33 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="metal-row" style={{ background: "rgba(212,175,55,0.06)", borderColor: "rgba(212,175,55,0.3)" }}>
-            <div className="metal-row__name">Total Net Weight</div>
+          <div
+            className="metal-row"
+            style={{
+              borderColor: "rgba(212,175,55,0.4)",
+              background: "linear-gradient(120deg, rgba(212,175,55,0.12), rgba(212,175,55,0.03))",
+            }}
+          >
+            <div className="metal-row__name" style={{ color: "var(--gold)", fontWeight: 700 }}>
+              Total
+            </div>
             <div className="metal-row__stats">
               <div className="metal-row__stat">
-                <span className="metal-row__stat-value" style={{ fontSize: "0.95rem", color: "var(--gold)" }}>
+                <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Weight</span>
+                <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>
                   {formatWeight(totalNetWeight)}
+                </span>
+              </div>
+              <div className="metal-row__stat">
+                <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Quantity (Nos)</span>
+                <span className="metal-row__stat-value" style={{ color: "var(--gold)" }}>
+                  {totalNetQuantity}
+                </span>
+              </div>
+              <div className="metal-row__stat">
+                <span className="metal-row__stat-label" style={{ color: "rgba(245,230,190,0.8)" }}>Stock Value</span>
+                <span className="metal-row__stat-value" style={{ color: "var(--gold)", fontSize: "0.95rem" }}>
+                  {formatCurrency(netStockValue)}
                 </span>
               </div>
             </div>
