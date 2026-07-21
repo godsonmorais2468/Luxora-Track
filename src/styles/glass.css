@@ -1,0 +1,161 @@
+/* ============================================================
+   LUXORA TRACK — GLASSMORPHISM
+   ============================================================ */
+
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.glass-hover {
+  transition: all 0.5s var(--ease-lux);
+}
+
+.glass-hover:hover {
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-float), var(--shadow-gold);
+  transform: translateY(-4px);
+}
+
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 1.1rem 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-lux);
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.glass-card:hover {
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: var(--shadow-float), var(--shadow-gold);
+  transform: translateY(-6px);
+}
+
+.glass-panel {
+  background: rgba(15, 15, 15, 0.55);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-float);
+}
+
+.glass-input-wrap {
+  position: relative;
+}
+
+.glass-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  color: var(--white);
+  font-size: 0.88rem;
+  transition: all 0.3s var(--ease-lux);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-input::placeholder {
+  color: var(--muted-dark);
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(212, 175, 55, 0.04);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12), 0 0 24px rgba(212, 175, 55, 0.1);
+}
+
+.glass-input:focus + .glass-input__label,
+.glass-input:not(:placeholder-shown) + .glass-input__label {
+  transform: translateY(-2.2rem) scale(0.8);
+  color: var(--gold);
+}
+
+.glass-input__label {
+  position: absolute;
+  left: 1.125rem;
+  top: 0.875rem;
+  color: var(--muted);
+  pointer-events: none;
+  transition: all 0.35s var(--ease-lux);
+  transform-origin: left center;
+  font-size: 0.95rem;
+}
+
+.glass-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.75rem;
+}
+
+.glass-select option {
+  background: #141414;
+  color: var(--white);
+}
+
+.glass-row {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  transition: all 0.3s var(--ease-lux);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.glass-row:hover {
+  background: var(--card-bg-hover);
+  border-color: var(--card-border-hover);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), var(--shadow-gold);
+  transform: translateY(-2px);
+}

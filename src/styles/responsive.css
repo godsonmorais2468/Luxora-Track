@@ -1,0 +1,227 @@
+/* ============================================================
+   LUXORA TRACK — RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1280px) {
+  :root {
+    --sidebar-width: 240px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .lux-container {
+    padding: 0 1rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .branch-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 100%;
+    --navbar-height: 64px;
+  }
+
+  .lux-container {
+    padding: 0 1rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .branch-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-hero__title {
+    font-size: 1.75rem !important;
+  }
+
+  .page-hero__greeting {
+    font-size: 1.1rem !important;
+  }
+
+  .glass-card {
+    padding: 1.25rem;
+  }
+
+  .glass-row {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .inventory-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .inventory-row .row-action {
+    grid-column: span 2;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .login-card {
+    width: 92vw !important;
+    padding: 2rem 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .navbar-search {
+    display: none;
+  }
+
+  .page-hero {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.6rem;
+  }
+}
+
+/* ---------- Compact dashboard components on small screens ---------- */
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 56px;
+  }
+
+  .page-body {
+    padding: 0.7rem 0.75rem;
+  }
+
+  .glass-card {
+    padding: 0.8rem 0.85rem;
+  }
+
+  .page-hero {
+    margin-bottom: 0.7rem;
+  }
+
+  .page-hero__title {
+    font-size: 1.25rem !important;
+  }
+
+  .page-hero__greeting {
+    font-size: 1rem !important;
+  }
+
+  .page-hero__subtitle {
+    font-size: 0.76rem;
+  }
+
+  /* Keep metal rows HORIZONTAL on mobile — long compact strips,
+     not stacked boxes. Stats spread across the remaining width. */
+  .metal-row {
+    padding: 0.5rem 0.7rem;
+    gap: 0.5rem;
+  }
+
+  .metal-row__name {
+    min-width: 0;
+    font-size: 0.76rem;
+    flex: 1 1 100%;
+  }
+
+  .metal-row__stats {
+    flex: 1 1 100%;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .metal-row__stat {
+    min-width: 0;
+  }
+
+  .metal-row__stat-value {
+    font-size: 0.78rem;
+  }
+
+  .metal-row__stat-label {
+    font-size: 0.56rem;
+  }
+
+  /* Three chips fit on one line */
+  .stat-chip {
+    flex: 1 1 28%;
+    padding: 0.45rem 0.55rem;
+  }
+
+  .stat-chip__value {
+    font-size: 0.86rem;
+  }
+
+  .badge-lux {
+    font-size: 0.62rem;
+    padding: 3px 8px;
+  }
+
+  .section-header {
+    margin-bottom: 0.6rem;
+  }
+
+  .section-header__title {
+    font-size: 0.94rem;
+  }
+
+  .section-header__sub {
+    font-size: 0.7rem;
+  }
+
+  .rate-bar {
+    padding: 0.6rem 0.8rem !important;
+  }
+
+  .rate-bar > div:last-child {
+    gap: 1rem !important;
+  }
+
+  /* Icon buttons stay touch-friendly even though desktop shrinks them */
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* MPIN keypad fits smaller screens */
+  .mpin-key {
+    width: 60px;
+    height: 54px;
+    font-size: 1.15rem;
+    border-radius: 14px;
+  }
+}
