@@ -824,6 +824,16 @@
   color: var(--white);
 }
 
+.rate-bar__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.rate-bar__item {
+  text-align: right;
+}
+
 /* ---------- Modal / MpinDialog overlay (centered dialog on desktop, becomes a bottom sheet on mobile via responsive.css) ---------- */
 .modal-overlay {
   display: flex;

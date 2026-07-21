@@ -63,8 +63,8 @@ export default function StaffDashboard() {
           background: "linear-gradient(120deg, rgba(212,175,55,0.14), rgba(212,175,55,0.03))",
         }}
       >
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem" }}>
-          <div style={{ textAlign: "right" }}>
+        <div className="rate-bar__group">
+          <div className="rate-bar__item">
             <div style={{ fontSize: "0.64rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)" }}>
               Current Gold Rate
             </div>
@@ -72,7 +72,7 @@ export default function StaffDashboard() {
               ₹{Math.round(goldRate / 10).toLocaleString()} / gram
             </div>
           </div>
-          <div style={{ textAlign: "right" }}>
+          <div className="rate-bar__item">
             <div style={{ fontSize: "0.64rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--muted)" }}>
               Current Silver Rate
             </div>

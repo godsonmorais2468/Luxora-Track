@@ -89,8 +89,23 @@
     grid-template-columns: 1fr !important;
   }
 
+  .filter-panel {
+    grid-template-columns: 1fr !important;
+  }
+
   .form-grid-2 {
     grid-template-columns: 1fr !important;
+  }
+
+  /* Belt-and-braces: nothing on a phone screen is allowed to force page-level
+     horizontal scroll, no matter what a page/component forgets to collapse. */
+  .lux-container,
+  .main-content,
+  .page-body,
+  .glass-card,
+  .glass-panel {
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   /* Navbar becomes two rows: actions on top, full-width search below */
@@ -147,7 +162,26 @@
   }
 
   .login-card {
-    padding: 2rem 1.25rem !important;
+    padding: 1.75rem 1.25rem !important;
+  }
+}
+
+/* Login — pin the whole screen to the viewport on mobile (no page scroll,
+   feels like a fixed native splash) — only the right panel scrolls
+   internally if content is ever taller than the screen. */
+@media (max-width: 900px) {
+  .login-shell {
+    height: 100dvh;
+    min-height: 100dvh !important;
+    overflow: hidden;
+  }
+
+  .login-right-panel {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1.25rem !important;
   }
 }
 
@@ -241,10 +275,28 @@
 
   .rate-bar {
     padding: 0.6rem 0.8rem !important;
+    justify-content: center !important;
   }
 
-  .rate-bar > div:last-child {
-    gap: 1rem !important;
+  /* Gold/Silver rate blocks: fixed 2-column grid so they never wrap into
+     mismatched left/right alignment on narrow screens. */
+  .rate-bar__group {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem !important;
+    width: 100%;
+  }
+
+  .rate-bar__item {
+    text-align: center !important;
+    min-width: 0;
+  }
+
+  .rate-bar__item > div:last-child {
+    font-size: 1rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Icon buttons stay touch-friendly even though desktop shrinks them */

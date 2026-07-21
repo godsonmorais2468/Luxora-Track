@@ -157,7 +157,7 @@ export default function Login() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexWrap: "wrap", position: "relative", zIndex: 2 }}>
+    <div className="login-shell" style={{ minHeight: "100vh", display: "flex", flexWrap: "wrap", position: "relative", zIndex: 2 }}>
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
         {particles.map((p) => (
           <div
@@ -246,7 +246,7 @@ export default function Login() {
       </div>
 
       {/* RIGHT: Login card */}
-      <div style={{ flex: "1 1 440px", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem", position: "relative", zIndex: 2 }}>
+      <div className="login-right-panel" style={{ flex: "1 1 440px", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem", position: "relative", zIndex: 2 }}>
         <div
           className="glass-panel login-card fade-in-up"
           style={{ width: 440, maxWidth: "92vw", padding: "3rem 2.5rem", position: "relative" }}
@@ -303,7 +303,6 @@ export default function Login() {
                 </p>
 
                 <div
-                  className="login-mobile-hide"
                   style={{
                     marginTop: "1.5rem",
                     padding: "0.9rem 1rem",
